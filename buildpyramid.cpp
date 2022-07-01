@@ -69,45 +69,73 @@ bool checkPyramidAt(int &index, int &high) {
 }
 
 void excuteBuild() {
-
     if (highestStone == 0) {
-        cout << "Can't make a pyramid" << endl;
+        cout << " >>> Can't make a pyramid" << endl;
         return;
     }
-
+    int tmpHighest = highestStone;
     maxHigh = (numStones + 1) /2;
 
     bool done = false;
     while (!done) {
-        if (highestStone == 1) {
+        // cout << "highest: " << tmpHighest << endl;
+        if (tmpHighest == 1) {
             // no need to check pyramid
             highPyramid = 1;
-            cout << "Top at anywhere" << " - high: " << highPyramid << " "
-                     << " highest: " << highestStone << " ";// << endl;
+            cout << " >>> Top at anywhere" << " - high: " << highPyramid << " ";
+            //<< " highest: " << tmpHighest << " ";// << endl;
             done = true;
             break;
         }
-        for (int index : vArr[highestStone]) {
-            // cout << "index: " << index << " - highest: " << highestStone << endl;
-            highPyramid = highestStone;
-            if (highestStone > maxHigh) {
+        for (int index : vArr[tmpHighest]) {
+            // loop exist stone have the same high
+            // cout << "index: " << index << " - highest: " << tmpHighest << endl;
+            highPyramid = tmpHighest;
+            if (tmpHighest > maxHigh) {
                 highPyramid = maxHigh;
             }
 
             int r = highPyramid - 1;
-            if (index - r < 0 || index + r >= numStones) {
+            if (index - r < 0 || index + r > numStones) {
                 // cout << "invalid. Pyramid will not fully" << endl;
                 continue;
             }
 
             if (checkPyramidAt(index, highPyramid)) {
-                cout << "Top at: " << index << " - high: " << highPyramid << " "
-                     << " highest: " << highestStone << " "; //<< endl;
+                cout << " >>> Top at: " << index << " - high: " << highPyramid << " ";
+                //<< " highest: " << tmpHighest << " "; //<< endl;
                 done = true;
                 break;
             }
         }
-        highestStone--;
+
+        for (int higher = highestStone; higher > tmpHighest; higher--) {
+            for (int index : vArr[higher]) {
+                // loop stone higher
+                // cout << "index: " << index << " - highest: " << tmpHighest << endl;
+                highPyramid = tmpHighest;
+                if (tmpHighest > maxHigh) {
+                    highPyramid = maxHigh;
+                }
+
+                int r = highPyramid - 1;
+                if (index - r < 0 || index + r > numStones) {
+                    // cout << "invalid. Pyramid will not fully" << endl;
+                    continue;
+                }
+
+                if (checkPyramidAt(index, highPyramid)) {
+                    cout << " >>> Top at: " << index << " - high: " << highPyramid << " ";
+                    //<< " highest: " << tmpHighest << " "; //<< endl;
+                    done = true;
+                    break;
+                }
+            }
+            if (done) break;
+        }
+        // loop exist stone larger the same high
+
+        tmpHighest--;
     }
 
     if (done) {
