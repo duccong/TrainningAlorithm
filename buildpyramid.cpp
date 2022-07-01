@@ -11,6 +11,9 @@ int sumStones = 0;
 
 void input() {
     ifstream myFile("input.txt");
+    // ofstream myOpenFile("input.txt");
+    // myOpenFile.is_open();
+    // myOpenFile.close();
     string line;
     if (myFile.is_open()) {
         while (getline(myFile, line)) {
@@ -168,6 +171,7 @@ BuildPyramid::BuildPyramid()
     input(); // -> vInput available
     for (const string &s: vInput) {
         stringToData(s);
+        cout << s << endl;
         excuteBuild();
         clearData();
     }
